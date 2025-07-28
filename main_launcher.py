@@ -145,11 +145,11 @@ def launch_tools(n_clicks_sqli, n_clicks_ddos):
     btn_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
     if btn_id == 'btn-sqli':
-        run_script('scripts/web_ch1.py', 5001)
+        run_script('web_ch1.py', 5001)
         return "Launching Web SQLi Scanner..."
 
     elif btn_id == 'btn-ddos':
-        run_script('scripts/try2.py', 5002)
+        run_script('try2.py', 5002)
         return "Launching DDoS Detection System..."
 
     return dash.no_update

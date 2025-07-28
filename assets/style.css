@@ -1,0 +1,24 @@
+/* assets/style.css */
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(-45deg, #1f1c2c, #928dab, #5a317f, #1f1c2c);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}

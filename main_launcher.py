@@ -1,42 +1,49 @@
+import dash
+from dash import html, dcc, Output, Input
 import subprocess
-import threading
-import tkinter as tk
-import webbrowser
-import time
 import sys
-import os
+import threading
+import webbrowser
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div(
+    style={'textAlign': 'center', 'padding': '40px', 'fontFamily': 'Arial'},
+    children=[
+        html.H2("Project Launcher"),
+        html.Button("Run Web SQLi Scanner", id="btn-sqli", n_clicks=0, style={'width': '250px', 'height': '45px', 'margin': '20px'}),
+        html.Button("Run DDoS Detection System", id="btn-ddos", n_clicks=0, style={'width': '250px', 'height': '45px', 'margin': '20px'}),
+        html.Div(id='status', style={'marginTop': '40px', 'fontSize': '1.1em', 'color': 'green'}),
+        html.Div("Tip: Check console for live logs!", style={'marginTop': '20px', 'fontSize': '0.95em', 'color': '#555'}),
+    ]
+)
 
 def run_flask_app(script_name, port):
     def target():
-        subprocess.run([sys.executable, script_name])
-    threading.Thread(target=target, daemon=True).start()
-    # Wait a bit for Flask to start, then open browser
-    time.sleep(2.5)
-    webbrowser.open(f"http://127.0.0.1:{port}")
-
-def run_ddos_detector(script_name, dashboard_port):
-    # Runs the DDoS detector script (which starts packet capture + dashboard)
-    def start_and_open_dashboard():
         subprocess.Popen([sys.executable, script_name])
-        time.sleep(3.0)
-        webbrowser.open(f"http://127.0.0.1:{dashboard_port}")
-    threading.Thread(target=start_and_open_dashboard, daemon=True).start()
+    threading.Thread(target=target, daemon=True).start()
+    threading.Timer(2.5, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
 
-root = tk.Tk()
-root.title("Project Launcher")
-root.geometry("350x210")
+@app.callback(
+    Output('status', 'children'),
+    Input('btn-sqli', 'n_clicks'),
+    Input('btn-ddos', 'n_clicks'),
+    prevent_initial_call=True
+)
+def launch_tools(n_clicks_sqli, n_clicks_ddos):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return dash.no_update
+    btn_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-# Button 1: SQLi Scanner
-btn1 = tk.Button(root, text="Run Web SQLi Scanner", font=("Arial", 12),
-                 command=lambda: run_flask_app("web_ch1.py", 5001))
-btn1.pack(pady=22)
+    if btn_id == 'btn-sqli':
+        run_flask_app('web_ch1.py', 5001)
+        return "Launching Web SQLi Scanner..."
+    elif btn_id == 'btn-ddos':
+        run_flask_app('try2.py', 5002)
+        return "Launching DDoS Detection System..."
 
-# Button 2: DDoS Detection System
-btn2 = tk.Button(root, text="Run DDoS Detection System", font=("Arial", 12),
-                 command=lambda: run_ddos_detector("try2.py", 5002))
-btn2.pack(pady=12)
+    return dash.no_update
 
-label = tk.Label(root, text="Tip: Check console for live logs!", font=("Arial", 9))
-label.pack(pady=12)
-
-root.mainloop()
+if __name__ == "__main__":
+    app.run_server(debug=True, port=8080)

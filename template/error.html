@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Error | SQLi Scanner</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .error-container {
+            background-color: #fff8f8;
+            border-left: 5px solid #ff5252;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #ff5252;
+            margin-top: 0;
+        }
+        .error-details {
+            background-color: white;
+            padding: 15px;
+            border-radius: 3px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .debug-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>⚠️ Scan Failed</h1>
+
+        <p>The scanner encountered an error while testing <strong>{{ target }}</strong>:</p>
+
+        <div class="error-details">{{ error }}</div>
+
+        <p>Possible reasons:</p>
+        <ul>
+            <li>Target server is down or unreachable</li>
+            <li>URL is invalid or malformed</li>
+            <li>Security systems blocked our scanner</li>
+            <li>Network connectivity issues</li>
+        </ul>
+
+        <a href="/" class="btn">Try Another Scan</a>
+
+        <div class="debug-info">
+            <p><small>
+                Technical details:<br>
+                Error occurred at {{ timestamp }}<br>
+                User Agent: {{ request.headers.get('User-Agent') }}
+            </small></p>
+        </div>
+    </div>
+</body>
+</html>

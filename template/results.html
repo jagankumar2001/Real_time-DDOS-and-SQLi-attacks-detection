@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results | SQLi Scanner</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --danger: #e63946;
+            --success: #2a9d8f;
+            --warning: #e9c46a;
+            --dark: #264653;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        h1 {
+            color: var(--dark);
+        }
+        .scan-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .summary-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .summary-label {
+            font-weight: 600;
+            width: 150px;
+            color: var(--dark);
+        }
+        .summary-value {
+            flex: 1;
+        }
+        .vulnerability-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .vulnerability-header {
+            background-color: var(--danger);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .vulnerability-body {
+            padding: 20px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .detail-label {
+            font-weight: 600;
+            width: 120px;
+            color: var(--dark);
+        }
+        .detail-value {
+            flex: 1;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .confidence-high {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        .confidence-medium {
+            color: var(--warning);
+            font-weight: 600;
+        }
+        .protection-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .protection-card h2 {
+            color: var(--success);
+            margin-top: 0;
+        }
+        .protection-list {
+            padding-left: 20px;
+        }
+        .protection-list li {
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #3a5a80;
+        }
+        .no-vulns {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .no-vulns h2 {
+            color: var(--success);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Scan Results</h1>
+        <div class="scan-summary">
+            <div class="summary-item">
+                <div class="summary-label">Scanned URL:</div>
+                <div class="summary-value"><code>{{ url }}</code></div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Vulnerabilities:</div>
+                <div class="summary-value">
+                    {% if details %}
+                        <span style="color: var(--danger); font-weight: 600">{{ details|length }} found</span>
+                    {% else %}
+                        <span style="color: var(--success); font-weight: 600">None detected</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Scan Time:</div>
+                <div class="summary-value">{{ scan_time }}</div>
+            </div>
+        </div>
+    </header>
+
+    {% if details %}
+        <h2>Detected Vulnerabilities</h2>
+        {% for vuln in details %}
+        <div class="vulnerability-card">
+            <div class="vulnerability-header">
+                <h3 style="margin: 0">SQL Injection</h3>
+                <span class="confidence-high">HIGH RISK</span>
+            </div>
+            <div class="vulnerability-body">
+                <div class="detail-row">
+                    <div class="detail-label">Form URL:</div>
+                    <div class="detail-value"><code>{{ vuln.form_action }}</code></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Method:</div>
+                    <div class="detail-value">{{ vuln.method }}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Payload:</div>
+                    <div class="detail-value"><pre>{{ vuln.payload }}</pre></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-vulns">
+            <h2>No SQL Injection Vulnerabilities Detected</h2>
+            <p>{{ note or "Our scanner didn’t find any SQL injection vulnerabilities." }}</p>
+            <p><em>Note: Automated scanners can't detect all vulnerabilities. Manual testing is recommended for critical systems.</em></p>
+        </div>
+    {% endif %}
+
+    <div class="protection-card">
+        <h2>🔒 Security Recommendations</h2>
+        <ul class="protection-list">
+            <li>Use prepared statements and parameterized queries.</li>
+            <li>Validate and sanitize all user inputs.</li>
+            <li>Use an ORM that handles escaping automatically.</li>
+            <li>Regularly test your web application for vulnerabilities.</li>
+            <li>Enable Web Application Firewalls (WAF).</li>
+        </ul>
+    </div>
+
+    <a href="/" class="btn">Scan Another Website</a>
+</body>
+</html>

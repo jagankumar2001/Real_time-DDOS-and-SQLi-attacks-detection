@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Injection Scanner</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --danger: #e63946;
+            --success: #2a9d8f;
+            --warning: #e9c46a;
+            --dark: #264653;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        h1 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        .scanner-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3a5a80;
+        }
+        .info-box {
+            background-color: #e9f5ff;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .scanner-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SQL Injection Vulnerability Scanner</h1>
+        <p>Test websites for SQL injection vulnerabilities</p>
+    </header>
+
+    <div class="scanner-form">
+        <form method="POST">
+            <div class="form-group">
+                <label for="url">Enter URL to scan:</label>
+                <input type="text" id="url" name="url" placeholder="https://example.com/login.php" required>
+            </div>
+            <button type="submit">Scan Website</button>
+        </form>
+    </div>
+
+    <div class="info-box">
+        <h3>How to use:</h3>
+        <ol>
+            <li>Enter the full URL of a login/search form (e.g., https://example.com/login.php)</li>
+            <li>Click "Scan Website"</li>
+            <li>Review the results for vulnerabilities</li>
+        </ol>
+        <p><strong>Note:</strong> Only test websites you own or have permission to scan.</p>
+    </div>
+
+    <footer>
+        <p>SQLi Scanner v2.0 | For security testing purposes only</p>
+    </footer>
+</body>
+</html>

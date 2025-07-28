@@ -155,13 +155,13 @@
         <div class="scan-summary">
             <div class="summary-item">
                 <div class="summary-label">Scanned URL:</div>
-                <div class="summary-value"><code>{{ target }}</code></div>
+                <div class="summary-value"><code>{{ url }}</code></div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">Vulnerabilities:</div>
                 <div class="summary-value">
-                    {% if vulnerabilities %}
-                        <span style="color: var(--danger); font-weight: 600">{{ vulnerabilities|length }} found</span>
+                    {% if details %}
+                        <span style="color: var(--danger); font-weight: 600">{{ details|length }} found</span>
                     {% else %}
                         <span style="color: var(--success); font-weight: 600">None detected</span>
                     {% endif %}
@@ -169,14 +169,14 @@
             </div>
             <div class="summary-item">
                 <div class="summary-label">Scan Time:</div>
-                <div class="summary-value">{{ scan_time }} seconds</div>
+                <div class="summary-value">{{ scan_time }}</div>
             </div>
         </div>
     </header>
 
-    {% if vulnerabilities %}
+    {% if details %}
         <h2>Detected Vulnerabilities</h2>
-        {% for vuln in vulnerabilities %}
+        {% for vuln in details %}
         <div class="vulnerability-card">
             <div class="vulnerability-header">
                 <h3 style="margin: 0">SQL Injection</h3>
@@ -185,7 +185,7 @@
             <div class="vulnerability-body">
                 <div class="detail-row">
                     <div class="detail-label">Form URL:</div>
-                    <div class="detail-value"><code>{{ vuln.url }}</code></div>
+                    <div class="detail-value"><code>{{ vuln.form_action }}</code></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Method:</div>
@@ -209,9 +209,11 @@
     <div class="protection-card">
         <h2>🔒 Security Recommendations</h2>
         <ul class="protection-list">
-            {% for item in protections %}
-                <li>{{ item }}</li>
-            {% endfor %}
+            <li>Use prepared statements and parameterized queries.</li>
+            <li>Validate and sanitize all user inputs.</li>
+            <li>Use an ORM that handles escaping automatically.</li>
+            <li>Regularly test your web application for vulnerabilities.</li>
+            <li>Enable Web Application Firewalls (WAF).</li>
         </ul>
     </div>
 

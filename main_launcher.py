@@ -155,4 +155,5 @@ def launch_tools(n_clicks_sqli, n_clicks_ddos):
     return dash.no_update
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8080)
+    #app.run_server(debug=True, port=8080)
+    app.run(host='127.0.0.1', port=8080, debug=False, use_reloader=False)

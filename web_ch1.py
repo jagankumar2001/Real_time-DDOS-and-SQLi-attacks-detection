@@ -120,4 +120,6 @@ if __name__ == "__main__":
         if not os.path.exists(full_path):
             raise FileNotFoundError(f"Missing template: {tpl}")
 
-    app.run(debug=True,port=5001)
+    # app.run(debug=True,port=5001)
+    # app.run(debug=False, port=5001, use_reloader=False)
+    app.run(host='127.0.0.1', port=5001, debug=False, use_reloader=False)

@@ -246,7 +246,7 @@ if __name__ == "__main__":
     detection_thread.start()
 
     flask_thread = threading.Thread(
-        target=lambda: app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False),
+        target=lambda: app.run(host='127.0.0.1', port=5002, debug=False, use_reloader=False),
         daemon=True
     )
     flask_thread.start()
